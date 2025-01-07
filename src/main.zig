@@ -22,7 +22,7 @@ pub fn main() !void {
     const allocator = arena.allocator();
     var cities = std.StringHashMap(City).init(allocator);
     defer cities.deinit();
-    var file = try std.fs.cwd().openFile("weather_stations.txt", .{});
+    var file = try std.fs.cwd().openFile("measurements.txt", .{});
     defer file.close();
 
     var buf_reader = std.io.bufferedReader(file.reader());
@@ -52,14 +52,14 @@ pub fn main() !void {
     }
     var iter = cities.iterator();
     while (iter.next()) |entry| {
-        const city = entry.key_ptr.*;
+        _ = entry.key_ptr.*;
         const v = entry.value_ptr.*;
-        const avg = v.sum / @as(f64, @floatFromInt(v.count));
-        const min = v.min;
-        const max = v.max;
-        const count = v.count;
+        _ = v.sum / @as(f64, @floatFromInt(v.count));
+        _ = v.min;
+        _ = v.max;
+        _ = v.count;
 
-        std.debug.print("City: {s}, Min: {}, Max: {}, Avg: {}, Count: {}\n", .{ city, min, max, avg, count });
+        // std.debug.print("City: {s}, Min: {}, Max: {}, Avg: {}, Count: {}\n", .{ city, min, max, avg, count });
     }
     const end = try Instant.now();
     const elapsed1: f64 = @floatFromInt(end.since(start));
